@@ -1,0 +1,17 @@
+name = "binancebot"
+description = "Shiny new project"
+version = "0.1.0-dev"
+
+authors = ["Lex Shilov"]
+maintainers = ["Lex Shilov <example@example.com>"]
+maintainers-logins = ["ax-hack"]
+
+executables = ["binance-bot"]
+
+[gpr-set-externals]
+architecture = "x86_64"
+
+[[depends-on]]
+aws = "^23.0.0"
+matreshka_league = "^21.0.0"
+ini_files = "^10.0.0"
