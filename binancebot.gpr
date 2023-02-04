@@ -22,6 +22,7 @@ project Binancebot is
 
    package Builder is
       for Executable ("run.adb") use "binance-bot";
+      for Switches ("ada") use ("-s", "-m", "-j2");
    end Builder;
 
 end Binancebot;

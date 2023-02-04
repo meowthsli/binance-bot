@@ -10,8 +10,11 @@ executables = ["binance-bot"]
 
 [gpr-set-externals]
 architecture = "x86_64"
+SOCKET = "openssl"
 
 [[depends-on]]
 aws = "^23.0.0"
 matreshka_league = "^21.0.0"
 ini_files = "^10.0.0"
+#loga = "^1.0.0"
+parse_args = "~0.9.0"

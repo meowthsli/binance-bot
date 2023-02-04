@@ -14,7 +14,7 @@ package body Binancebot.Net is
       Data : AWS.Response.Data;
    begin
       Data := AWS.Client.Get
-        (URL => "https://api.cryptounit.cc/v1/chain/get_info");
+        (URL => "https://data.binance.com/api/v3/exchangeInfo");
       Ada.Text_IO.Put_Line(AWS.Response.Message_Body (Data));
 
    end Get_Exchange_Info;
