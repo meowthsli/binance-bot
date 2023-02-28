@@ -1,0 +1,138 @@
+Intro to Excel Writer 
+=====================
+
+The Excel Writer consists of an Ada package, Excel_Out,
+which produces Excel files - as physical files, or as
+other types of data streams.
+
+The creation of an Excel file is as simple as this
+small procedure:
+
+  with Excel_Out;
+   
+  procedure Small_demo is 
+    xl : Excel_Out.Excel_Out_File;
+  begin 
+    xl.Create ("Small.xls");
+    xl.Put_Line ("Hello world !");
+    xl.Close;
+  end;
+
+
+Contents
+========
+
+  Excel Writer
+  ============
+
+    - excel_out.ads             : package specification
+    - excel_out.adb             : package body
+    - excel_out_demo.adb        : demo procedure
+    - excel_out_gnat.gpr        : project file for the GNAT compiler
+    - excel_out_objectada.prj   : project file for the ObjectAda64 compiler
+    - excel_writer.txt          : this file
+    - ieee_754*                 : packages used by excel_out.adb
+
+  Some goodies - around Excel, CSV's, spreadsheets in general
+  ===========================================================
+
+    - extras/biff_dump.adb                   : procedure for viewing the Excel BIFF format
+    - extras/csv.ads                         : CSV parser (specification)
+    - extras/csv.adb                         : (body)
+    - extras/csv2html.adb                    : a CSV to HTML translation tool
+    - extras/csv2tex.adb                     : a CSV to LaTeX translation tool
+    - extras/spreadsheet_references.ads      : converts (i,j) to or from the "A1" or "R1C1" format (specification)
+    - extras/spreadsheet_references.adb      : (body)
+    - extras/spreadsheet_references_demo.adb : demo procedure for Spreadsheet_references
+
+  Test
+  ====
+
+    - test/ew_test.adb
+
+License / Warning / Legal stuff
+===============================
+
+There is NO WARRANTY in the Excel Writer software.
+Excel Writer is licensed under the MIT License.
+You find the full license and copyright notice in excel_out.ads.
+
+Portability
+===========
+Excel Writer can be compiled for any target machine, and with any Ada 95 or later compiler.
+The compiler's Interfaces package must provide an Unsigned_64 type (this is for the portable
+IEEE double-precision export).
+
+How to build Excel Writer and its demo
+======================================
+   Here is how to build with GNAT/GCC:   
+   
+          - run build.cmd (Windows)
+      or
+          - type "gnatmake -P excel_out_gnat" in the command line
+      or
+          - type "gnatmake excel_out_demo" in the command line
+      or
+          - open the excel_out_gnat.gpr file with the GNAT Studio,
+            press F4
+      or
+          - open excel_out_demo.adb with AdaGIDE, press F3
+      or
+          - your way...
+   
+   Here is how to build with ObjectAda:
+   
+          - open the excel_out_objectada.prj file with the ObjectAda IDE,
+            press F7
+
+As a result there is a excel_out_demo[.exe] executable.
+  
+Type hierarchy
+==============
+In Excel_Out:
+
+  |- Excel_Out_Stream  : root type, abstract
+  \
+   |- Excel_Out_File   : type for writing to files (defined in Excel_Out)
+   |- Excel_Out_String : type for writing to strings (defined in Excel_Out)
+   |
+In your own extension, if needed:
+   |
+   |- (your own stream!)
+
+How to create properly Excel files or streams
+=============================================
+Most, if not all possibilities are in the Big_demo procedure
+nested in Excel_Out_Demo. So it is a good place to pick code...
+
+To summarize, you need to define the spreadsheet contents in
+a certain order:
+
+1. Create
+
+2. Optional settings, before any data output:
+   | Define page layout (see Header, Footer, Page_Setup, ...)
+   | Write_default_column_width
+   | Write_column_width for specific columns
+   | Write_default_row_height
+   | Write_row_height for specific rows
+   | Define_font, then Define_format
+
+3. | Write(xl, row, column, data): row by row, column by column
+   | Put(xl, data)               : same, but column is auto-incremented
+   | New_Line(xl),...            : other "Text_IO"-like
+   | Use_format, influences the format of data written next
+
+4. Close
+
+5. (Excel_Out_String only) function Contents returns the full .xls
+
+As you observed, you can write cell contents by setting for each cell
+the target row and column, with Write, or by using Put,
+Put_Line, New_Line, just like Ada.Text_IO. Both ways can be mixed
+ad libitum.
+
+Enjoy!
+
+Gautier de Montmollin
+gautier.de.montmollin, at: gmail dot com.
